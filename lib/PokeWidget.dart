@@ -45,11 +45,25 @@ class _PokeWidgetState extends State<PokeWidget> {
                 padding: const EdgeInsets.all(4.0),
                 child: Image.asset(widget.pokespriteurl),
               ),
-              Text('# ${widget.pokenumber}'),
+              Text('# ${zeroConversions(widget.pokenumber)}'),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+String zeroConversions(int pokenumber){
+  if(pokenumber<10){
+    return "00$pokenumber";
+  }
+  else {
+    if(pokenumber<100){
+    return  "0$pokenumber";
+    }
+    else {
+    return "$pokenumber";
+    }
   }
 }
