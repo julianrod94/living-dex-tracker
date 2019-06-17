@@ -4,11 +4,12 @@ class Pokemon {
   static final db_id = "id";
   static final db_name = "name";
   static final db_captured = "captured";
+  static final db_sprite_url = "sprite_url";
 
   int id;
   String name;
-  int number;
   bool captured;
+  String spriteUrl;
 
   Pokemon({
     @required this.id,
