@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:living_dex_tracker/model/Generation.dart';
+import 'Pokemon.dart';
 
 class Pokedex {
   static final db_id = "id";
@@ -11,6 +12,7 @@ class Pokedex {
   String name;
   Generation generation;
   bool shiny;
+  List<Pokemon> pokemons = List();
 
   Pokedex({
     this.id,

@@ -41,17 +41,18 @@ class LDTDatabase {
           await db.execute(
               "CREATE TABLE $pokemonTableName ("
                   "${Pokemon.db_id} INTEGER PRIMARY KEY,"
-                  "${Pokemon.db_name} TEXT"
+                  "${Pokemon.db_name} TEXT,"
+                  "${Pokemon.db_sprite_url} TEXT"
                   ")");
           await db.execute("CREATE TABLE $pokedexTableName ("
-              "${Pokedex.db_id} INTEGER PRIMARY KEY,"
-              "${Pokedex.db_name} TEXT"
-              "${Pokedex.db_generation} INTEGER"
-              "${Pokedex.db_shiny} INTEGER"
+              "${Pokedex.db_id} INTEGER PRIMARY KEY, "
+              "${Pokedex.db_name} TEXT, "
+              "${Pokedex.db_generation} INTEGER, "
+              "${Pokedex.db_shiny} INTEGER "
               ")");
           await db.execute("CREATE TABLE $capturedTableName ("
-              "id INTEGER PRIMARY KEY,"
-              "FOREIGN KEY(pokemon_id) REFERENCES $pokemonTableName(${Pokemon.db_id}),"
+              "id INTEGER PRIMARY KEY, "
+              "FOREIGN KEY(pokemon_id) REFERENCES $pokemonTableName(${Pokemon.db_id}), "
               "FOREIGN KEY(pokedex_id) REFERENCES $pokedexTableName(${Pokedex.db_id})"
               ")");
         });
@@ -74,6 +75,28 @@ class LDTDatabase {
       pokemons.add(new Pokemon.fromMap(item));
     }
     return pokemons;
+  }
+
+  Future<Pokedex> getPokedexById (String id) async {
+    var db = await _getDb();
+    var result = await db.rawQuery(
+        'SELECT * '
+        'FROM $pokedexTableName '
+        'WHERE $pokedexTableName.${Pokedex.db_id} = "$id" ');
+    return new Pokedex.fromMap(result[0]);
+  }
+
+  Future<List<Pokedex>> getAllPokedex() async {
+    var db = await _getDb();
+    var result = await db.rawQuery(
+    'SELECT * '
+    'FROM $pokedexTableName ');
+
+    var pokedexList = [];
+    for(Map<String, dynamic> item in result) {
+      pokedexList.add(new Pokedex.fromMap(item));
+    }
+    return pokedexList;
   }
 
   createPokedex(Pokedex pokedex) async {
