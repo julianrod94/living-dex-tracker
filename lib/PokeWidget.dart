@@ -29,14 +29,22 @@ class _PokeWidgetState extends State<PokeWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: changeCaptureState,
-      child: Center(
+      child: Container(
+        width: 60,
+        height: 60,
         child: Card(
-          color: this.captured ? Colors.yellow : Colors.white,
+          color: this.captured ? Colors.amber : Colors.white,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Text('${widget.pokename}'),
-              Image.asset(widget.pokespriteurl),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text('${widget.pokename}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Image.asset(widget.pokespriteurl),
+              ),
               Text('# ${widget.pokenumber}'),
             ],
           ),
