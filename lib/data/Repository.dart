@@ -18,24 +18,24 @@ class Repository {
   }
 
   Future<Livingdex> getPokedexById(String id) async {
-    Livingdex pokedex = await database.getLivingdexById(id);
+    Livingdex livingdex = await database.getLivingdexById(id);
     List<Pokemon> pokemons = await database.getPokemonsByLivingdexId(id);
     if(pokemons != null) {
-      pokedex.pokemons = pokemons;
+      livingdex.pokemons = pokemons;
     }
-    return pokedex;
+    return livingdex;
   }
 
-  Future<List<Livingdex>> getPokedexList() async {
+  Future<List<Livingdex>> getLivingdexList() async {
     return await database.getAllLivingdex();
   }
 
-  createPokedex(String name, Game game, bool shiny) {
-    var pokedex = Livingdex(name: name, game: game, shiny: shiny);
-    return database.createLivingdex(pokedex);
+  createLivingdex(String name, Game game, bool shiny) {
+    var livingdex = Livingdex(name: name, game: game, shiny: shiny);
+    return database.createLivingdex(livingdex);
   }
 
-  deletePokedex(String id) async {
+  deleteLivingdex(String id) async {
     return database.deleteLivingdex(id);
   }
 }
