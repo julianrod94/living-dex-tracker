@@ -81,9 +81,9 @@ class LDTDatabase {
   Future<List<Pokemon>> getPokemonsByLivingdexId(String id) async {
     var db = await _getDb();
     var result = await db.rawQuery(
-      'SELECT $pokemonTableName.*, $capturedTableName.id as captured'
+      'SELECT $pokemonTableName.*'
       'FROM $pokemonTableName '
-          'LEFT JOIN $capturedTableName '
+          'JOIN $capturedTableName '
               'ON $capturedTableName.pokemon_id = $pokemonTableName.${Pokemon.db_id} '
               'AND $capturedTableName.livingdex_id = "$id" ');
     var pokemons = [];
