@@ -1,0 +1,67 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+class LivingdexElement extends StatefulWidget {
+
+  final String pokename;
+  final String pokespriteurl;
+  final int pokenumber;
+
+  LivingdexElement({
+    @required this.pokename,
+    @required this.pokenumber,
+    @required this.pokespriteurl
+  });
+
+  @override
+  _LivingdexElementState createState() => _LivingdexElementState();
+}
+
+class _LivingdexElementState extends State<LivingdexElement> {
+  bool captured = false;
+
+  void changeCaptureState() {
+    setState(() {
+      captured = !captured;
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: changeCaptureState,
+      child: Container(
+        width: 60,
+        height: 60,
+        child: Card(
+          color: this.captured ? Colors.amber : Colors.white,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text('${widget.pokename}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Image.asset(widget.pokespriteurl),
+              ),
+              Text('# ${zeroConversions(widget.pokenumber)}'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+String zeroConversions(int pokenumber){
+  if(pokenumber<10){
+    return "00$pokenumber";
+  }
+  else if(pokenumber<100){
+    return  "0$pokenumber";
+  }
+  else {
+    return "$pokenumber";
+  }
+}

@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class PokedexElement extends StatefulWidget {
+class LivingdexListElement extends StatefulWidget {
   final String name;
   final String type;
   final String game;
   final int totalPokemon;
 
-  PokedexElement({
+  LivingdexListElement({
     @required this.name,
     @required this.type,
     @required this.game,
@@ -15,18 +15,17 @@ class PokedexElement extends StatefulWidget {
   });
 
   @override
-  _PokedexElementState createState() => _PokedexElementState();
+  _LivingdexListElementState createState() => _LivingdexListElementState();
 
 }
 
-class _PokedexElementState extends State<PokedexElement> {
+class _LivingdexListElementState extends State<LivingdexListElement> {
   int capturedPokemon = 0;
 
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Card(
+    return Card(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
@@ -72,8 +71,8 @@ class _PokedexElementState extends State<PokedexElement> {
             Text('${this.capturedPokemon} / ${widget.totalPokemon}'),
           ],
         ),
-      ),
-    );
+      );
+    //);
   }
 
 }
