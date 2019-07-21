@@ -45,9 +45,7 @@ class LDTDatabase {
               "CREATE TABLE $pokemonTableName ("
                   "${Pokemon.db_id} INTEGER PRIMARY KEY,"
                   "${Pokemon.db_name} TEXT,"
-                  "${Pokemon.db_national_number} INTEGER,"
-                  "${Pokemon.db_sprite_url} TEXT,"
-                  "${Pokemon.db_shiny_sprite_url} TEXT,"
+                  "${Pokemon.db_national_number} INTEGER"
                   ")");
           await db.execute(
               "CREATE TABLE $gameTableName ("
