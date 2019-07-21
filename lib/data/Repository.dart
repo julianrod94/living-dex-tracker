@@ -1,7 +1,7 @@
 import 'package:living_dex_tracker/data/LDTDatabase.dart';
 import 'package:living_dex_tracker/model/Pokedex.dart';
 import 'package:living_dex_tracker/model/Pokemon.dart';
-import 'package:living_dex_tracker/model/Generation.dart';
+import 'package:living_dex_tracker/model/Game.dart';
 
 class Repository {
 
@@ -17,8 +17,8 @@ class Repository {
     database = LDTDatabase.get();
   }
 
-  Future<Pokedex> getPokedexById(String id) async {
-    Pokedex pokedex = await database.getPokedexById(id);
+  Future<Livingdex> getPokedexById(String id) async {
+    Livingdex pokedex = await database.getPokedexById(id);
     List<Pokemon> pokemons = await database.getPokemonsByPokedexId(id);
     if(pokemons != null) {
       pokedex.pokemons = pokemons;
@@ -26,12 +26,12 @@ class Repository {
     return pokedex;
   }
 
-  Future<List<Pokedex>> getPokedexList() async {
+  Future<List<Livingdex>> getPokedexList() async {
     return await database.getAllPokedex();
   }
 
-  createPokedex(String name, Generation gen, bool shiny) {
-    var pokedex = Pokedex(name: name, generation: gen, shiny: shiny);
+  createPokedex(String name, Game game, bool shiny) {
+    var pokedex = Livingdex(name: name, game: game, shiny: shiny);
     return database.createPokedex(pokedex);
   }
 

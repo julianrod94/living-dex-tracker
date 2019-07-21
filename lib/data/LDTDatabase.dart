@@ -4,14 +4,17 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:living_dex_tracker/model/Pokemon.dart';
+import 'package:living_dex_tracker/model/Game.dart';
 import 'package:living_dex_tracker/model/Pokedex.dart';
 
 class LDTDatabase {
   static final LDTDatabase _lDTDatabase = new LDTDatabase._internal();
 
   final String pokemonTableName = "Pokemon";
-  final String pokedexTableName = "Pokedex";
+  final String livingdexTableName = "Livingdex";
   final String capturedTableName = "Captured";
+  final String gameTableName = "Game";
+  final String pokemonGameTableName = "Pokemon_Game";
 
   Database db;
 
@@ -42,18 +45,31 @@ class LDTDatabase {
               "CREATE TABLE $pokemonTableName ("
                   "${Pokemon.db_id} INTEGER PRIMARY KEY,"
                   "${Pokemon.db_name} TEXT,"
-                  "${Pokemon.db_sprite_url} TEXT"
+                  "${Pokemon.db_national_number} INTEGER,"
+                  "${Pokemon.db_sprite_url} TEXT,"
+                  "${Pokemon.db_shiny_sprite_url} TEXT,"
                   ")");
-          await db.execute("CREATE TABLE $pokedexTableName ("
-              "${Pokedex.db_id} INTEGER PRIMARY KEY, "
-              "${Pokedex.db_name} TEXT, "
-              "${Pokedex.db_generation} INTEGER, "
-              "${Pokedex.db_shiny} INTEGER "
+          await db.execute(
+              "CREATE TABLE $gameTableName ("
+                  "id INTEGER PRIMARY KEY,"
+                  "name TEXT"
+                  ")");
+          await db.execute("CREATE TABLE $livingdexTableName ("
+              "${Livingdex.db_id} INTEGER PRIMARY KEY,"
+              "${Livingdex.db_name} TEXT,"
+              "${Livingdex.db_shiny} INTEGER,"
+              "FOREIGN KEY(${Livingdex.db_gameId}) REFERENCES $gameTableName(${Game.db_id})"
               ")");
           await db.execute("CREATE TABLE $capturedTableName ("
               "id INTEGER PRIMARY KEY, "
               "FOREIGN KEY(pokemon_id) REFERENCES $pokemonTableName(${Pokemon.db_id}), "
-              "FOREIGN KEY(pokedex_id) REFERENCES $pokedexTableName(${Pokedex.db_id})"
+              "FOREIGN KEY(livingdex_id) REFERENCES $livingdexTableName(${Livingdex.db_id})"
+              ")");
+          await db.execute("CREATE TABLE $pokemonGameTableName ("
+              "id INTEGER PRIMARY KEY, "
+              "regional_id INTEGER,"
+              "FOREIGN KEY(pokemon_id) REFERENCES $pokemonTableName(${Pokemon.db_id}), "
+              "FOREIGN KEY(game_id) REFERENCES $livingdexTableName(${Game.db_id})"
               ")");
         });
     didInit = true;
@@ -61,15 +77,15 @@ class LDTDatabase {
 
   }
 
-  /// Get all pokemons by pokedex Id, will return a list with all the pokemons found
-  Future<List<Pokemon>> getPokemonsByPokedexId(String id) async {
+  /// Get all pokemons by livingdex Id, will return a list with all the pokemons captured in that livingdex
+  Future<List<Pokemon>> getPokemonsByLivingdexId(String id) async {
     var db = await _getDb();
     var result = await db.rawQuery(
       'SELECT $pokemonTableName.*, $capturedTableName.id as captured'
       'FROM $pokemonTableName '
           'LEFT JOIN $capturedTableName '
               'ON $capturedTableName.pokemon_id = $pokemonTableName.${Pokemon.db_id} '
-              'AND $capturedTableName.pokedex_id = "$id" ');
+              'AND $capturedTableName.livingdex_id = "$id" ');
     var pokemons = [];
     for(Map<String, dynamic> item in result) {
       pokemons.add(new Pokemon.fromMap(item));
@@ -77,37 +93,37 @@ class LDTDatabase {
     return pokemons;
   }
 
-  Future<Pokedex> getPokedexById (String id) async {
+  Future<Livingdex> getLivingdexById (String id) async {
     var db = await _getDb();
     var result = await db.rawQuery(
         'SELECT * '
-        'FROM $pokedexTableName '
-        'WHERE $pokedexTableName.${Pokedex.db_id} = "$id" ');
-    return new Pokedex.fromMap(result[0]);
+        'FROM $livingdexTableName '
+        'WHERE $livingdexTableName.${Livingdex.db_id} = "$id" ');
+    return new Livingdex.fromMap(result[0]);
   }
 
-  Future<List<Pokedex>> getAllPokedex() async {
+  Future<List<Livingdex>> getAllLivingdex() async {
     var db = await _getDb();
     var result = await db.rawQuery(
     'SELECT * '
-    'FROM $pokedexTableName ');
+    'FROM $livingdexTableName ');
 
-    var pokedexList = [];
+    var livingdex = [];
     for(Map<String, dynamic> item in result) {
-      pokedexList.add(new Pokedex.fromMap(item));
+      livingdex.add(new Livingdex.fromMap(item));
     }
-    return pokedexList;
+    return livingdex;
   }
 
-  createPokedex(Pokedex pokedex) async {
+  createPokedex(Livingdex livingdex) async {
     var db = await _getDb();
-    Map<String, dynamic> row = pokedex.toMap();
-    db.insert("$pokedexTableName", row);
+    Map<String, dynamic> row = livingdex.toMap();
+    db.insert("$livingdexTableName", row);
   }
 
   deletePokedex(String id) async {
     var db = await _getDb();
-    db.delete("$pokedexTableName", where: "id = ?", whereArgs: [id]);
+    db.delete("$livingdexTableName", where: "id = ?", whereArgs: [id]);
   }
 
 //  capturePokemon(String pokemonId, String pokedexId) async {
