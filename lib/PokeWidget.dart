@@ -58,12 +58,10 @@ String zeroConversions(int pokenumber){
   if(pokenumber<10){
     return "00$pokenumber";
   }
-  else {
-    if(pokenumber<100){
+  else if(pokenumber<100){
     return  "0$pokenumber";
-    }
-    else {
+  }
+  else {
     return "$pokenumber";
-    }
   }
 }
