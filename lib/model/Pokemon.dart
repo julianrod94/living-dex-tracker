@@ -5,6 +5,8 @@ class Pokemon {
   static final db_name = "name";
   static final db_captured = "captured";
   static final db_sprite_url = "sprite_url";
+  static final db_shiny_sprite_url = "shiny_sprite_url";
+  static final db_national_number = "national_number";
 
   int id;
   String name;
