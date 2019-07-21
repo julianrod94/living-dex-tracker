@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:living_dex_tracker/model/Pokemon.dart';
 import 'package:living_dex_tracker/model/Game.dart';
-import 'package:living_dex_tracker/model/Pokedex.dart';
+import 'package:living_dex_tracker/model/Livingdex.dart';
 
 class LDTDatabase {
   static final LDTDatabase _lDTDatabase = new LDTDatabase._internal();
@@ -115,13 +115,13 @@ class LDTDatabase {
     return livingdex;
   }
 
-  createPokedex(Livingdex livingdex) async {
+  createLivingdex(Livingdex livingdex) async {
     var db = await _getDb();
     Map<String, dynamic> row = livingdex.toMap();
     db.insert("$livingdexTableName", row);
   }
 
-  deletePokedex(String id) async {
+  deleteLivingdex(String id) async {
     var db = await _getDb();
     db.delete("$livingdexTableName", where: "id = ?", whereArgs: [id]);
   }
