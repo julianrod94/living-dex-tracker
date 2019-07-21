@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'PokeGrid.dart';
+import '../widgets/Livingdex.dart';
 
-class PokeGridView extends StatelessWidget {
+class LivingdexScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +10,7 @@ class PokeGridView extends StatelessWidget {
         title: Text("Grid View"),
       ),
       body: Center(
-        child: PokeGrid(),
+        child: Livingdex(),
       ),
     );
   }

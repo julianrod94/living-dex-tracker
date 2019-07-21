@@ -1,23 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class PokeWidget extends StatefulWidget {
+class LivingdexElement extends StatefulWidget {
 
   final String pokename;
   final String pokespriteurl;
   final int pokenumber;
 
-  PokeWidget({
+  LivingdexElement({
     @required this.pokename,
     @required this.pokenumber,
     @required this.pokespriteurl
   });
 
   @override
-  _PokeWidgetState createState() => _PokeWidgetState();
+  _LivingdexElementState createState() => _LivingdexElementState();
 }
 
-class _PokeWidgetState extends State<PokeWidget> {
+class _LivingdexElementState extends State<LivingdexElement> {
   bool captured = false;
 
   void changeCaptureState() {

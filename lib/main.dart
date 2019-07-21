@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'PokeGridView.dart';
-import 'PokeWidget.dart';
-import 'MainView.dart';
+import 'package:living_dex_tracker/Screens/LivingdexListScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -70,9 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
         appBar: AppBar(
-          title: Text("Main View"),
+          title: Text("Livingdex Tracker"),
         ),
-        body: MainView()
+        body: LivingdexListScreen(),
     );
   }
 }
