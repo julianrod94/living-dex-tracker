@@ -1,5 +1,5 @@
 import 'package:living_dex_tracker/data/LDTDatabase.dart';
-import 'package:living_dex_tracker/model/Pokedex.dart';
+import 'package:living_dex_tracker/model/Livingdex.dart';
 import 'package:living_dex_tracker/model/Pokemon.dart';
 import 'package:living_dex_tracker/model/Game.dart';
 
@@ -18,8 +18,8 @@ class Repository {
   }
 
   Future<Livingdex> getPokedexById(String id) async {
-    Livingdex pokedex = await database.getPokedexById(id);
-    List<Pokemon> pokemons = await database.getPokemonsByPokedexId(id);
+    Livingdex pokedex = await database.getLivingdexById(id);
+    List<Pokemon> pokemons = await database.getPokemonsByLivingdexId(id);
     if(pokemons != null) {
       pokedex.pokemons = pokemons;
     }
@@ -27,15 +27,15 @@ class Repository {
   }
 
   Future<List<Livingdex>> getPokedexList() async {
-    return await database.getAllPokedex();
+    return await database.getAllLivingdex();
   }
 
   createPokedex(String name, Game game, bool shiny) {
     var pokedex = Livingdex(name: name, game: game, shiny: shiny);
-    return database.createPokedex(pokedex);
+    return database.createLivingdex(pokedex);
   }
 
   deletePokedex(String id) async {
-    return database.deletePokedex(id);
+    return database.deleteLivingdex(id);
   }
 }
