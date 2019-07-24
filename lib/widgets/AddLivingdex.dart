@@ -20,7 +20,6 @@ class _LivingdexData{
 class AddLivingdexState extends State<AddLivingdex>{
   final formKey = GlobalKey<FormState>();
   _LivingdexData _data = new _LivingdexData();
-  PokedexType _regnat = PokedexType.REGIONAL;
 
   void submit(){
     if(this.formKey.currentState.validate()){
@@ -48,13 +47,17 @@ class AddLivingdexState extends State<AddLivingdex>{
             onSaved: (String value){
               this._data.name = value;
             },
-          )
+          ),
           DropdownButtonFormField<String>(
-            value: selected,
             decoration: new InputDecoration(
               labelText: 'Livingdex Game'
             ),
-            items: ["Red","Blue","Yellow"],
+            items: ["Red","Blue","Yellow"]
+                .map((label) => DropdownMenuItem(
+              child: Text(label),
+              value: label,
+            ))
+                .toList(),
             onChanged: (value){
               setState(() => _data.game = value );
             },
@@ -62,14 +65,14 @@ class AddLivingdexState extends State<AddLivingdex>{
           RadioListTile<PokedexType>(
             title: const Text('National'),
             value: PokedexType.NATIONAL,
-            groupValue: _regnat,
-            onChanged: (PokedexType value) { setState(() { _regnat = value; }); },
+            groupValue: _data.regional,
+            onChanged: (PokedexType value) { setState(() { _data.regional = value; }); },
           ),
           RadioListTile<PokedexType>(
           title: const Text('Regional'),
           value: PokedexType.REGIONAL,
-          groupValue: _regnat,
-          onChanged: (PokedexType value) { setState(() { _regnat = value; }); },
+          groupValue: _data.regional,
+          onChanged: (PokedexType value) { setState(() { _data.regional = value; }); },
           ),
         ],
       ),
