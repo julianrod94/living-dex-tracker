@@ -1,0 +1,4 @@
+enum ShinySelect {
+  SHINY,
+  NORMAL
+}
