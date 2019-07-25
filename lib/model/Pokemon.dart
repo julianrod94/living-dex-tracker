@@ -9,31 +9,40 @@ class Pokemon {
 
   int id;
   String name;
-  bool captured;
   String spriteUrl;
+  String shinySpriteUrl;
   int nationalNumber;
   int regionalNumber;
+  bool captured;
 
   Pokemon({
     @required this.id,
     @required this.name,
-    @required this.nationalNumber,
     @required this.spriteUrl,
-    @required this.regionalNumber,
-    @required this.captured
+    @required this.shinySpriteUrl,
+    @required this.nationalNumber,
+    this.regionalNumber,
+    this.captured,
   });
 
   Pokemon.fromMap(Map<String, dynamic> map): this(
     id: map[db_id],
     name: map[db_name],
     nationalNumber: map[db_national_number],
-    captured: map[db_captured] != null,
+    spriteUrl: map[db_sprite_url],
+    shinySpriteUrl: map[db_shiny_sprite_url],
   );
 
   Map<String, dynamic> toMap() {
-    return {
-      db_id: id,
+    var map = <String, dynamic>{
       db_name: name,
+      db_national_number: nationalNumber,
+      db_sprite_url: spriteUrl,
+      db_shiny_sprite_url: shinySpriteUrl,
     };
+    if (id != null) {
+      map[db_id] = id;
+    }
+    return map;
   }
 }

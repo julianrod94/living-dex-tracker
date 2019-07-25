@@ -17,25 +17,45 @@ class Repository {
     database = LDTDatabase.get();
   }
 
-  Future<Livingdex> getPokedexById(String id) async {
-    Livingdex livingdex = await database.getLivingdexById(id);
-    List<Pokemon> pokemons = await database.getPokemonsByLivingdexId(id);
-    if(pokemons != null) {
-      livingdex.pokemons = pokemons;
-    }
+  Future<Livingdex> getLivingdex(int id) async {
+    Livingdex livingdex = await database.getLivingdex(id);
+    List<Pokemon> capturedPokemons = await database.getCapturedPokemons(id);
+    List<Pokemon> nationalDex = await database.getNationalDex(livingdex.gameId);
+    nationalDex.map((pokemon){
+      if (capturedPokemons.contains(pokemon)){
+        pokemon.captured = true;
+      }
+      return pokemon;
+    });
+    livingdex.pokemons = nationalDex;
     return livingdex;
   }
 
-  Future<List<Livingdex>> getLivingdexList() async {
-    return await database.getAllLivingdex();
+  Future<List<Livingdex>> listLivingdexes() async {
+    return database.listLivingdexes();
   }
 
-  createLivingdex(String name, Game game, bool shiny) {
-    var livingdex = Livingdex(name: name, game: game, shiny: shiny);
+  createLivingdex(String name, int gameId, bool shiny, bool national) {
+    var livingdex = Livingdex(name: name, gameId: gameId, shiny: shiny, national: national);
     return database.createLivingdex(livingdex);
   }
 
-  deleteLivingdex(String id) async {
+  deleteLivingdex(int id) async {
     return database.deleteLivingdex(id);
   }
+
+  Future<List<Game>> listGames() async {
+    return database.listGames();
+  }
+
+  capturePokemon(livingdexId, pokemonId) async{
+    return database.capturePokemon(livingdexId, pokemonId);
+  }
+
+  releasePokemon(livingdexId, pokemonId) async{
+    return database.releasePokemon(livingdexId, pokemonId);
+  }
+
+  // updateLivingdex
+
 }
