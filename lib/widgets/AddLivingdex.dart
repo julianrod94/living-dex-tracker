@@ -3,26 +3,20 @@ import '../model/Enums/PokedexType.dart';
 import '../model/Enums/ShinySelect.dart';
 
 
-class AddLivingdex extends StatefulWidget{
+class AddLivingdex extends StatefulWidget {
   @override
-  AddLivingdexState createState(){
+  AddLivingdexState createState() {
     return AddLivingdexState();
   }
 }
 
-class _LivingdexData{
-  String name = '';
-  String game = '';
-  PokedexType  regional = PokedexType.REGIONAL;
-  ShinySelect shiny = ShinySelect.NORMAL;
-}
-
-class AddLivingdexState extends State<AddLivingdex>{
+class AddLivingdexState extends State<AddLivingdex> {
   final formKey = GlobalKey<FormState>();
-  _LivingdexData _data = new _LivingdexData();
+  Map<String, dynamic> _data = { 'shiny': false };
+  var gameValues = ["Red", "Blue", "Yellow"];
 
-  void submit(){
-    if(this.formKey.currentState.validate()){
+  void submit() {
+    if (this.formKey.currentState.validate()) {
       formKey.currentState.save();
     }
   }
@@ -35,44 +29,31 @@ class AddLivingdexState extends State<AddLivingdex>{
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           TextFormField(
-            decoration: new InputDecoration(
-              labelText: 'Livingdex Name'
+            decoration: InputDecoration(
+                labelText: 'Livingdex Name'
             ),
-            validator:(value){
-              if(value.isEmpty){
-                return 'Enter some text';
-              }
-              return null;
-            },
-            onSaved: (String value){
-              this._data.name = value;
+            validator: (value) => value.isEmpty ? 'Enter some text' : null,
+            onSaved: (String value) {
+              this._data["name"] = value;
             },
           ),
           DropdownButtonFormField<String>(
-            decoration: new InputDecoration(
-              labelText: 'Livingdex Game'
+            decoration: InputDecoration(
+                labelText: 'Livingdex Game'
             ),
-            items: ["Red","Blue","Yellow"]
-                .map((label) => DropdownMenuItem(
-              child: Text(label),
-              value: label,
-            ))
-                .toList(),
-            onChanged: (value){
-              setState(() => _data.game = value );
+            value: gameValues[0],
+            items: gameValues.map((label) =>
+                DropdownMenuItem(child: Text(label), value: label,)).toList(),
+            onChanged: (value) => setState(() => _data["game"] = value),
+          ),
+          CheckboxListTile(
+            title: const Text('Shiny'),
+            value: _data["shiny"],
+            onChanged: (bool value) {
+              setState(() {
+                _data["shiny"] = value;
+              });
             },
-          ),
-          RadioListTile<PokedexType>(
-            title: const Text('National'),
-            value: PokedexType.NATIONAL,
-            groupValue: _data.regional,
-            onChanged: (PokedexType value) { setState(() { _data.regional = value; }); },
-          ),
-          RadioListTile<PokedexType>(
-          title: const Text('Regional'),
-          value: PokedexType.REGIONAL,
-          groupValue: _data.regional,
-          onChanged: (PokedexType value) { setState(() { _data.regional = value; }); },
           ),
         ],
       ),
