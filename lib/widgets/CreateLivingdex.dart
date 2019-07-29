@@ -12,12 +12,6 @@ class AddLivingdexState extends State<AddLivingdex> {
   Map<String, dynamic> _data = { 'shiny': false };
   var gameValues = ["Red", "Blue", "Yellow"];
 
-  void submit() {
-    if (this.formKey.currentState.validate()) {
-      formKey.currentState.save();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -29,6 +23,7 @@ class AddLivingdexState extends State<AddLivingdex> {
             height: 100,
             child: Center(
               child: TextFormField(
+                //initialValue: null,
                 decoration: InputDecoration(
                     labelText: 'Livingdex Name'
                 ),
@@ -75,6 +70,27 @@ class AddLivingdexState extends State<AddLivingdex> {
                 ),
             ),
           ),
+          Container(
+            //width: screenSize.width,
+            child: new RaisedButton(
+              child: new Text(
+                "Let's Go!",
+                style: new TextStyle(
+                    color: Colors.white
+                ),
+              ),
+              onPressed: () {
+                if (formKey.currentState.validate()) {
+                  formKey.currentState.save();
+                  Navigator.pop(context);
+                }
+              },
+              color: Colors.blue,
+            ),
+            margin: new EdgeInsets.only(
+                top: 20.0
+            ),
+          )
         ],
       ),
     );
