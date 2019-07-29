@@ -9,8 +9,8 @@ class AddLivingdex extends StatefulWidget {
 
 class AddLivingdexState extends State<AddLivingdex> {
   final formKey = GlobalKey<FormState>();
-  Map<String, dynamic> _data = { 'shiny': false };
-  var gameValues = ["Red", "Blue", "Yellow"];
+  Map<String, dynamic> _data = { 'shiny': false, 'game': gameValues[0] };
+  static const gameValues = ["Red", "Blue", "Yellow"];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class AddLivingdexState extends State<AddLivingdex> {
                 decoration: InputDecoration(
                     labelText: 'Livingdex Game'
                 ),
-                value: gameValues[0],
+                value:  _data["game"],
                 items: gameValues.map((label) =>
                     DropdownMenuItem(child: Text(label), value: label,)).toList(),
                 onChanged: (value) => setState(() => _data["game"] = value),
