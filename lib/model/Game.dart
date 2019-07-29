@@ -1,6 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:living_dex_tracker/model/Game.dart';
-import 'Pokemon.dart';
 
 class Game {
   static final db_id = "id";
