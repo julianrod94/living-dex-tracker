@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/CreateLivingdex.dart';
 
 class CreateLivingdexScreen extends StatelessWidget {
   @override
@@ -7,13 +8,16 @@ class CreateLivingdexScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Add View"),
       ),
-      body: Center(
-        child: RaisedButton(
+      body: Column(
+          children: <Widget>[
+            AddLivingdex()
+          ],
+/*        child: RaisedButton(
           onPressed: () {
             Navigator.pop(context);
           },
           child: Text('Go back!'),
-        ),
+        ),*/
       ),
     );
   }
