@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'data/Repository.dart';
 import 'package:living_dex_tracker/Screens/LivingdexListScreen.dart';
+import 'model/Pokemon.dart';
 
 void main() => runApp(MyApp());
 
@@ -47,26 +48,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<Pokemon> pokemon = List();
 
-  void _incrementCounter() {
-    var repo = Repository.get();
-    //repo.createLivingdex("Hello", 1, true, true);
-    repo.listLivingdexes().then((livingdexes){
-      _counter = livingdexes.length;
-      //repo.deleteLivingdex(livingdexes.first.id);
-    });
+  void _incrementCounter() async {
+    var pokemon = await Repository.get().getAllPokemon();
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      // _counter++;
+      this.pokemon = pokemon;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    pokemon.forEach((poke) => print(poke.name));
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //

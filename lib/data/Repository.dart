@@ -44,6 +44,10 @@ class Repository {
     return database.deleteLivingdex(id);
   }
 
+  Future<List<Pokemon>> getAllPokemon() async {
+    return database.getAllPokemon();
+  }
+
   Future<List<Game>> listGames() async {
     return database.listGames();
   }
