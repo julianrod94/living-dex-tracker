@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../model/Enums/PokedexType.dart';
-import '../model/Enums/ShinySelect.dart';
-
 
 class AddLivingdex extends StatefulWidget {
   @override
