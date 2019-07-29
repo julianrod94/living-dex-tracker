@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'data/Repository.dart';
 import 'package:living_dex_tracker/Screens/LivingdexListScreen.dart';
 import 'data/Repository.dart';
 import 'model/Pokemon.dart';
