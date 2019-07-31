@@ -28,11 +28,14 @@ class Repository {
       return pokemon;
     });
     livingdex.pokemons = nationalDex;
+    livingdex.game = await getGame(livingdex.gameId);
     return livingdex;
   }
 
   Future<List<Livingdex>> listLivingdexes() async {
-    return database.listLivingdexes();
+    var livingdexes = await database.listLivingdexes();
+    livingdexes.forEach((livingdex) => getGame(livingdex.gameId).then((game) => livingdex.game = game));
+    return livingdexes;
   }
 
   createLivingdex(String name, int gameId, bool shiny, bool national) {
@@ -50,6 +53,10 @@ class Repository {
 
   Future<List<Game>> listGames() async {
     return database.listGames();
+  }
+
+  Future<Game> getGame(int id) async {
+    return database.getGame(id);
   }
 
   capturePokemon(livingdexId, pokemonId) async{

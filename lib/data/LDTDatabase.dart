@@ -986,6 +986,13 @@ class LDTDatabase {
     return null;
   }
 
+  Future<Game> getGame(int id) async {
+        var db = await _getDb();
+        var result = await db.query(gameTableName,  where: 'id = ?', whereArgs: [id]);
+        if (result.length > 0) return Game.fromMap(result.first);
+        return null;
+  }
+
   Future<List<Livingdex>> listLivingdexes() async {
     var db = await _getDb();
     var result = await db.query(livingdexTableName);
