@@ -29,8 +29,8 @@ class Pokemon {
     id: map[db_id],
     name: map[db_name],
     nationalNumber: map[db_national_number],
-    spriteUrl: 'assets/regular/${map[db_name].toString().toLowerCase()}.png',
-    shinySpriteUrl: 'assets/shiny/${map[db_name]}.png',
+    spriteUrl: map[db_sprite_url],
+    shinySpriteUrl: map[db_shiny_sprite_url],
   );
 
   Map<String, dynamic> toMap() {
