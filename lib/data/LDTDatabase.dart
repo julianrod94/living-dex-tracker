@@ -920,9 +920,59 @@ class LDTDatabase {
           db.execute("INSERT INTO game (id, name) values(30,\"Let's Go, Pikachu!\")");
           db.execute("INSERT INTO game (id, name) values(31,\"Let's Go, Eevee\")");
 
-          batch.commit();
+          await batch.commit();
+
+          var pokemonLists =
+               [generatePokemonList(1,151, [],[]),
+                generatePokemonList(1,151, [],[]),
+                generatePokemonList(1,151, [],[]),
+                generatePokemonList(1,151, [],[]),
+                generatePokemonList(1,252, [],[]),
+                generatePokemonList(1,252, [],[]),
+                generatePokemonList(1,252, [],[]),
+                generatePokemonList(1,386, [],[]),
+                generatePokemonList(1,386, [],[]),
+                generatePokemonList(1,386, [],[]),
+                generatePokemonList(1,386, [],[]),
+                generatePokemonList(1,386, [],[]),
+                generatePokemonList(1,493, [],[]),
+                generatePokemonList(1,493, [],[]),
+                generatePokemonList(1,493, [],[]),
+                generatePokemonList(1,493, [],[]),
+                generatePokemonList(1,493, [],[]),
+                generatePokemonList(1,649, [],[]),
+                generatePokemonList(1,649, [],[]),
+                generatePokemonList(1,649, [],[]),
+                generatePokemonList(1,649, [],[]),
+                generatePokemonList(1,721, [],[]),
+                generatePokemonList(1,721, [],[]),
+                generatePokemonList(1,721, [],[]),
+                generatePokemonList(1,721, [],[]),
+                generatePokemonList(1,807, [],[]),
+                generatePokemonList(1,807, [],[]),
+                generatePokemonList(1,807, [],[]),
+                generatePokemonList(1,807, [],[]),
+                generatePokemonList(1,151, [],[808,809]),
+                generatePokemonList(1,151, [],[808,809])];
+
+          var pokemon = await getAllPokemon();
+
+          pokemonLists.asMap().forEach((index, pokemonList){
+                pokemonList.forEach((pokemonNumber){
+                      var pokemonId = pokemon.firstWhere((pokemon) => pokemon.nationalNumber == pokemonNumber).id;
+                      db.insert(pokemonGameTableName, { 'pokemon_id': pokemonId, 'game_id': index+1, });
+                });
+          });
+
+
         });
     didInit = true;
+  }
+
+  List generatePokemonList(start,finish,List skipped,List extras){
+        var pokemonList = [for(var i=start; i<=finish; i+=1) i];
+        skipped.forEach((poke) => pokemonList.remove(poke));
+        return [...pokemonList, ...extras];
   }
 
   Future<Livingdex> getLivingdex(int id) async {
