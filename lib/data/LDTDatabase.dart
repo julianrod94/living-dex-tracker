@@ -955,7 +955,11 @@ class LDTDatabase {
                 generatePokemonList(1,151, [],[808,809]),
                 generatePokemonList(1,151, [],[808,809])];
 
-          var pokemon = await getAllPokemon();
+          var pokemonsMapList = await db.query(pokemonTableName);
+          List<Pokemon> pokemon = [];
+          for(Map<String, dynamic> item in pokemonsMapList) {
+                pokemon.add(Pokemon.fromMap(item));
+          }
 
           pokemonLists.asMap().forEach((index, pokemonList){
                 pokemonList.forEach((pokemonNumber){
