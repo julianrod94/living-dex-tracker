@@ -26,7 +26,7 @@ class LivingdexListScreen extends StatelessWidget {
                       return new LivingdexListElement(
                         name: livingdex.name,
                         game: 'emerald',
-                        totalPokemon: livingdex.pokemons.length,
+                        totalPokemon: livingdex.pokemons != null ? livingdex.pokemons.length : 0,
                         type: livingdex.shiny ? 'shiny' : 'regular',
                       );
                     }

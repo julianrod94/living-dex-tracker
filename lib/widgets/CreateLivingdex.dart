@@ -11,7 +11,7 @@ class AddLivingdex extends StatefulWidget {
 
 class AddLivingdexState extends State<AddLivingdex> {
   final formKey = GlobalKey<FormState>();
-  Map<String, dynamic> _data = { 'shiny': false };
+  Map<String, dynamic> _data = { 'shiny': false};
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +51,20 @@ class AddLivingdexState extends State<AddLivingdex> {
                       height: 100,
                       child: Center(
                         child: DropdownButtonFormField<Game>(
-                          decoration: InputDecoration(
-                              labelText: 'Livingdex Game'
-                          ),
-                          value: _data["game"],
-                          items: games.map<DropdownMenuItem<Game>>((game) =>
-                              DropdownMenuItem<Game>(
-                                child: Text(game.name),
-                                value: game))
-                              .toList(),
-                          onChanged: (value){
+                            decoration: InputDecoration(
+                                labelText: 'Livingdex Game'
+                            ),
+                            value: _data["game"],
+                            items: games.map<DropdownMenuItem<Game>>((game) =>
+                                DropdownMenuItem<Game>(
+                                    child: Text(game.name),
+                                    value: game))
+                                .toList(),
+                            onChanged: (value) {
                               print(value);
-                              setState(() => _data = { ..._data, 'game': value});
-                          }
+                              setState(() =>
+                              _data = { ..._data, 'game': value});
+                            }
                         ),
                       ),
                     );
@@ -108,6 +109,12 @@ class AddLivingdexState extends State<AddLivingdex> {
               onPressed: () {
                 if (formKey.currentState.validate()) {
                   formKey.currentState.save();
+                  Repository.get().createLivingdex(
+                    _data["name"],
+                    _data["game"].id,
+                    _data["shiny"],
+                    false,
+                  );
                   Navigator.pop(context);
                 }
               },
