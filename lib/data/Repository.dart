@@ -21,13 +21,10 @@ class Repository {
     Livingdex livingdex = await database.getLivingdex(id);
     List<Pokemon> capturedPokemons = await database.getCapturedPokemons(id);
     List<Pokemon> nationalDex = await database.getNationalDex(livingdex.gameId);
-    nationalDex.map((pokemon){
-      if (capturedPokemons.contains(pokemon)){
-        pokemon.captured = true;
-      }
+    livingdex.pokemons = nationalDex.map((pokemon){
+      pokemon.captured = capturedPokemons.contains(pokemon);
       return pokemon;
-    });
-    livingdex.pokemons = nationalDex;
+    }).toList();
     livingdex.game = await getGame(livingdex.gameId);
     return livingdex;
   }

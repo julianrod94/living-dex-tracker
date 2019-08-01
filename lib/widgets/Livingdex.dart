@@ -27,9 +27,12 @@ class Livingdex extends StatelessWidget{
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3),
                 itemBuilder: (BuildContext context, int index) {
-                  return new LivingdexElement(pokename: pokemons[index].name,
-                      pokenumber: pokemons[index].nationalNumber,
-                      pokespriteurl: pokemons[index].spriteUrl);
+                  return LivingdexElement(
+                      pokemon: pokemons[index],
+                      isShiny: livingdex.shiny,
+                      livingdexId: livingdexId,
+                      wasCaptured: pokemons[index].captured,
+                  );
                 },
               );
               return myGrid;

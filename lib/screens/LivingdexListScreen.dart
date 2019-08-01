@@ -29,7 +29,7 @@ class LivingdexListScreen extends StatelessWidget {
                       return GestureDetector(
                         child: LivingdexListElement(
                           name: livingdex.name,
-                          game: 'emerald',
+                          game: livingdex.game.name,
                           totalPokemon: livingdex.pokemons != null ? livingdex.pokemons.length : 0,
                           type: livingdex.shiny ? 'shiny' : 'regular',
                         ),

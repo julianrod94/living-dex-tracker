@@ -1034,7 +1034,7 @@ class LDTDatabase {
 
   capturePokemon(int livingdexId, int pokemonId) async {
     var db = await _getDb();
-    db.insert(capturedTableName, { 'livingdex_id': livingdexId, 'pokemon_id': pokemonId, });
+    var result = await db.insert(capturedTableName, { 'livingdex_id': livingdexId, 'pokemon_id': pokemonId, });
   }
 
   releasePokemon(int livingdexId, int pokemonId) async {
@@ -1062,8 +1062,12 @@ class LDTDatabase {
 
   Future<List<Pokemon>> getCapturedPokemons(int livingdexId) async {
     var db = await _getDb();
-    var pokemonsMapList = await db.query('$pokemonTableName INNER JOIN $capturedTableName ON $capturedTableName.pokemon_id = $pokemonTableName.${Pokemon.db_id}',
-        where:'$capturedTableName.livingdex_id = ?', whereArgs: [livingdexId]);
+    var pokemonsMapList = await db.rawQuery(
+        'SELECT $pokemonTableName.* '
+        'FROM $pokemonTableName '
+        'INNER JOIN $capturedTableName ON $capturedTableName.pokemon_id = $pokemonTableName.${Pokemon.db_id} '
+        'WHERE $capturedTableName.livingdex_id = ?',
+        [livingdexId]);
     List<Pokemon> pokemons = [];
     for(Map<String, dynamic> item in pokemonsMapList) {
       pokemons.add(Pokemon.fromMap(item));
@@ -1073,8 +1077,11 @@ class LDTDatabase {
 
   Future<List<Pokemon>> getNationalDex(int gameId) async {
     var db = await _getDb();
-    var pokemonsMapList = await db.query('$pokemonTableName INNER JOIN $pokemonGameTableName ON $pokemonGameTableName.pokemon_id = $pokemonTableName.${Pokemon.db_id}',
-        where:'$pokemonGameTableName.game_id = ?', whereArgs: [gameId]);
+    var pokemonsMapList = await db.rawQuery(
+        'SELECT $pokemonTableName.* '
+        'FROM $pokemonTableName '
+        'INNER JOIN $pokemonGameTableName ON $pokemonGameTableName.pokemon_id = $pokemonTableName.${Pokemon.db_id} '
+        'WHERE $pokemonGameTableName.game_id = ?',[gameId]);
     List<Pokemon> pokemons = [];
     for(Map<String, dynamic> item in pokemonsMapList) {
       pokemons.add(Pokemon.fromMap(item));
