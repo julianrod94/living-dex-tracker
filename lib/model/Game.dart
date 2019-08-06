@@ -28,4 +28,6 @@ class Game {
     }
     return map;
   }
+
+  bool operator ==(o) => o is Game && o.name == name && o.id == id;
 }

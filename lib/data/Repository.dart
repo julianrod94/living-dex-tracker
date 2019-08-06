@@ -21,18 +21,18 @@ class Repository {
     Livingdex livingdex = await database.getLivingdex(id);
     List<Pokemon> capturedPokemons = await database.getCapturedPokemons(id);
     List<Pokemon> nationalDex = await database.getNationalDex(livingdex.gameId);
-    nationalDex.map((pokemon){
-      if (capturedPokemons.contains(pokemon)){
-        pokemon.captured = true;
-      }
+    livingdex.pokemons = nationalDex.map((pokemon){
+      pokemon.captured = capturedPokemons.contains(pokemon);
       return pokemon;
-    });
-    livingdex.pokemons = nationalDex;
+    }).toList();
+    livingdex.game = await getGame(livingdex.gameId);
     return livingdex;
   }
 
   Future<List<Livingdex>> listLivingdexes() async {
-    return database.listLivingdexes();
+    var livingdexes = await database.listLivingdexes();
+    livingdexes.forEach((livingdex) => getGame(livingdex.gameId).then((game) => livingdex.game = game));
+    return livingdexes;
   }
 
   createLivingdex(String name, int gameId, bool shiny, bool national) {
@@ -44,8 +44,16 @@ class Repository {
     return database.deleteLivingdex(id);
   }
 
+  Future<List<Pokemon>> getAllPokemon() async {
+    return database.getAllPokemon();
+  }
+
   Future<List<Game>> listGames() async {
     return database.listGames();
+  }
+
+  Future<Game> getGame(int id) async {
+    return database.getGame(id);
   }
 
   capturePokemon(livingdexId, pokemonId) async{

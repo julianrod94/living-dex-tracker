@@ -12,12 +12,6 @@ class CreateLivingdexScreen extends StatelessWidget {
           children: <Widget>[
             AddLivingdex()
           ],
-/*        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),*/
       ),
     );
   }

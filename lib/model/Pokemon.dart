@@ -45,4 +45,6 @@ class Pokemon {
     }
     return map;
   }
+
+  bool operator ==(o) => o is Pokemon && o.id == id;
 }

@@ -12,6 +12,7 @@ class Livingdex {
   int id;
   String name;
   int gameId;
+  Game game;
   bool shiny;
   bool national;
   List<Pokemon> pokemons;
