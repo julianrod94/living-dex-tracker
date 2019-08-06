@@ -119,7 +119,7 @@ class AddLivingdexState extends State<AddLivingdex> {
                   Navigator.pop(context);
                 }
               },
-              color: Colors.blue,
+              color: Colors.red,
             ),
             margin: new EdgeInsets.only(
                 top: 20.0
