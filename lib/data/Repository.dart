@@ -31,7 +31,7 @@ class Repository {
 
   Future<List<Livingdex>> listLivingdexes() async {
     var livingdexes = await database.listLivingdexes();
-    livingdexes.forEach((livingdex) => getGame(livingdex.gameId).then((game) => livingdex.game = game));
+    await Future.forEach(livingdexes, (livingdex) async => livingdex.game = await getGame(livingdex.gameId));
     return livingdexes;
   }
 
