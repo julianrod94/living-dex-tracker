@@ -11,7 +11,16 @@ class AddLivingdex extends StatefulWidget {
 
 class AddLivingdexState extends State<AddLivingdex> {
   final formKey = GlobalKey<FormState>();
-  Map<String, dynamic> _data = { 'shiny': false};
+  bool isShiny = false;
+  String name = "";
+  Game game;
+  Future<List<Game>> _future;
+
+  initState() {
+    super.initState();
+    _future = Repository.get().listGames();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +39,13 @@ class AddLivingdexState extends State<AddLivingdex> {
                 ),
                 validator: (value) => value.isEmpty ? 'Enter some text' : null,
                 onSaved: (String value) {
-                  this._data["name"] = value;
+                  name = value;
                 },
               ),
             ),
           ),
           FutureBuilder<List<Game>>(
-            future: Repository.get().listGames(),
+            future: _future,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -46,25 +55,21 @@ class AddLivingdexState extends State<AddLivingdex> {
                     return Container();
                   else {
                     var games = snapshot.data;
-                    _data["game"] ??= games[0];
+                    game ??= games[0];
                     return Container(
                       height: 100,
                       child: Center(
                         child: DropdownButtonFormField<Game>(
-                            decoration: InputDecoration(
-                                labelText: 'Livingdex Game'
-                            ),
-                            value: _data["game"],
-                            items: games.map<DropdownMenuItem<Game>>((game) =>
-                                DropdownMenuItem<Game>(
-                                    child: Text(game.name),
-                                    value: game))
-                                .toList(),
-                            onChanged: (value) {
-                              print(value);
-                              setState(() =>
-                              _data = { ..._data, 'game': value});
-                            }
+                          decoration: InputDecoration(
+                              labelText: 'Livingdex Game'
+                          ),
+                          value: game,
+                          items: games.map<DropdownMenuItem<Game>>((game) =>
+                              DropdownMenuItem<Game>(
+                                  child: Text(game.name),
+                                  value: game))
+                              .toList(),
+                          onChanged: (value) => setState(() => game = value)
                         ),
                       ),
                     );
@@ -86,12 +91,8 @@ class AddLivingdexState extends State<AddLivingdex> {
                         .apply(fontSizeFactor: 1.2),
                   ),
                   Checkbox(
-                    value: _data["shiny"],
-                    onChanged: (bool value) {
-                      setState(() {
-                        _data["shiny"] = value;
-                      });
-                    },
+                    value: isShiny,
+                    onChanged: (bool value) => setState(() => isShiny = value),
                   ),
                 ],
               ),
@@ -110,9 +111,9 @@ class AddLivingdexState extends State<AddLivingdex> {
                 if (formKey.currentState.validate()) {
                   formKey.currentState.save();
                   Repository.get().createLivingdex(
-                    _data["name"],
-                    _data["game"].id,
-                    _data["shiny"],
+                    name,
+                    game.id,
+                    isShiny,
                     false,
                   );
                   Navigator.pop(context);
