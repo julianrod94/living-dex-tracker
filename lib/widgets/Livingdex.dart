@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:living_dex_tracker/data/Repository.dart';
 import 'package:living_dex_tracker/model/Pokemon.dart';
-import 'package:living_dex_tracker/widgets/LivingdexElement.dart';
+import 'package:living_dex_tracker/widgets/MiniatureBoxElement.dart';
 import 'package:living_dex_tracker/model/Livingdex.dart' as LivingdexModel;
+
 
 class Livingdex extends StatefulWidget {
   final int livingdexId;
@@ -35,21 +36,48 @@ class LivingdexState extends State<Livingdex> {
     }
     else {
       List<Pokemon> pokemons = livingdex.pokemons;
-      var myGrid = new GridView.builder(
-        itemCount: pokemons.length,
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3),
-        itemBuilder: (BuildContext context, int index) {
+      List<List<Pokemon>> grids = List.generate(pokemons.length~/30+1, (index) => pokemons.sublist(index*30,(index*30)+30>pokemons.length? pokemons.length :(index*30)+30));
+      return ListView.builder(
+        itemCount: pokemons.length~/30+1,
+        itemBuilder: (BuildContext context,int index1){
+          return Padding(
+            padding:const EdgeInsets.all(4.0),
+            child: Card(
+              child: Container(
+                height: 290,
+                width: 50,
+                child: GestureDetector(
+                  child: GridView.count(
+                    crossAxisCount: 6,
+                    children: List.generate(grids[index1].length, (index2) {
+                      return MiniatureBoxElement(
+                        pokemon: grids[index1][index2],
+                        isShiny: livingdex.shiny,
+                        livingdexId: widget.livingdexId,
+                        wasCaptured: grids[index1][index2].captured,
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+      /*return GridView.count(
+        crossAxisCount: 3,
+        children: List.generate(30, (index) {
           return LivingdexElement(
             pokemon: pokemons[index],
             isShiny: livingdex.shiny,
             livingdexId: widget.livingdexId,
             wasCaptured: pokemons[index].captured,
-            onCaptureStatusChange: (bool captured) => this.setState(() => livingdex.pokemons[index].captured = captured),
+            onCaptureStatusChange: (bool captured) =>
+                this.setState(() =>
+                livingdex.pokemons[index].captured = captured),
           );
-        },
-      );
-      return myGrid;
+        }),
+      );*/
     }
   }
 }
