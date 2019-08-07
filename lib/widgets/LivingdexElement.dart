@@ -9,12 +9,14 @@ class LivingdexElement extends StatefulWidget {
   final bool isShiny;
   final int livingdexId;
   final bool wasCaptured;
+  final onCaptureStatusChange;
 
   LivingdexElement({
     @required this.pokemon,
     @required this.isShiny,
     @required this.livingdexId,
     @required this.wasCaptured,
+    @required this.onCaptureStatusChange,
   });
 
   @override
@@ -28,11 +30,15 @@ class _LivingdexElementState extends State<LivingdexElement> {
   _LivingdexElementState(this.captured);
 
   void changeCaptureState() {
-    captured ? Repository.get().releasePokemon(widget.livingdexId, widget.pokemon.id):
+    captured ?
+    Repository.get().releasePokemon(widget.livingdexId, widget.pokemon.id):
     Repository.get().capturePokemon(widget.livingdexId, widget.pokemon.id);
+
     setState(() {
       captured = !captured;
     });
+
+    widget.onCaptureStatusChange(captured);
   }
 
   Widget build(BuildContext context) {
