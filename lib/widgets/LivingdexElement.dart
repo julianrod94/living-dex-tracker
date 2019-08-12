@@ -8,26 +8,31 @@ class LivingdexElement extends StatefulWidget {
   final Pokemon pokemon;
   final bool isShiny;
   final int livingdexId;
-  final bool wasCaptured;
+  final bool initialCapturedState;
   final onCaptureStatusChange;
 
   LivingdexElement({
     @required this.pokemon,
     @required this.isShiny,
     @required this.livingdexId,
-    @required this.wasCaptured,
+    @required this.initialCapturedState,
     @required this.onCaptureStatusChange,
   });
 
   @override
-  _LivingdexElementState createState() => _LivingdexElementState(wasCaptured);
+  _LivingdexElementState createState() => _LivingdexElementState();
 }
 
 class _LivingdexElementState extends State<LivingdexElement> {
-  bool captured = false;
+  bool captured;
 
+  @override
+  void initState() {
+    super.initState();
+    captured = widget.initialCapturedState;
+  }
 
-  _LivingdexElementState(this.captured);
+  _LivingdexElementState();
 
   void changeCaptureState() {
     captured ?

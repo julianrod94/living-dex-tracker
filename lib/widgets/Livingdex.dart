@@ -7,15 +7,15 @@ import 'package:living_dex_tracker/model/Pokemon.dart';
 import 'package:living_dex_tracker/widgets/LivingdexElement.dart';
 import 'package:living_dex_tracker/model/Livingdex.dart' as LivingdexModel;
 
-class Livingdex extends StatefulWidget {
+class LivingdexWidget extends StatefulWidget {
   final int livingdexId;
 
-  Livingdex(@required this.livingdexId);
+  LivingdexWidget(@required this.livingdexId);
 
   State<StatefulWidget> createState() => LivingdexState();
 }
 
-class LivingdexState extends State<Livingdex> {
+class LivingdexState extends State<LivingdexWidget> {
   LivingdexModel.Livingdex livingdex;
   bool isLoading = true;
 
@@ -44,7 +44,7 @@ class LivingdexState extends State<Livingdex> {
             pokemon: pokemons[index],
             isShiny: livingdex.shiny,
             livingdexId: widget.livingdexId,
-            wasCaptured: pokemons[index].captured,
+            initialCapturedState: pokemons[index].captured,
             onCaptureStatusChange: (bool captured) => this.setState(() => livingdex.pokemons[index].captured = captured),
           );
         },
