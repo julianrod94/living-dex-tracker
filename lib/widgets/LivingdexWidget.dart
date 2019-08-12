@@ -9,8 +9,12 @@ import 'package:living_dex_tracker/model/Livingdex.dart' as LivingdexModel;
 
 class LivingdexWidget extends StatefulWidget {
   final int livingdexId;
+  var searchCriteria;
 
-  LivingdexWidget(@required this.livingdexId);
+  LivingdexWidget(
+      @required this.livingdexId,
+      @required this.searchCriteria,
+      );
 
   State<StatefulWidget> createState() => LivingdexState();
 }
@@ -34,7 +38,7 @@ class LivingdexState extends State<LivingdexWidget> {
       return Text('Loading Pokemon');
     }
     else {
-      List<Pokemon> pokemons = livingdex.pokemons;
+      List<Pokemon> pokemons = livingdex.pokemons.where((pokemon) => pokemon.name.toLowerCase().contains(widget.searchCriteria)).toList();
       var myGrid = new GridView.builder(
         itemCount: pokemons.length,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
