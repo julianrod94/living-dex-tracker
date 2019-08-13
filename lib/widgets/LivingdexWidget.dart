@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:living_dex_tracker/data/Repository.dart';
@@ -9,7 +7,7 @@ import 'package:living_dex_tracker/model/Livingdex.dart' as LivingdexModel;
 
 class LivingdexWidget extends StatefulWidget {
   final int livingdexId;
-  var searchCriteria;
+  String searchCriteria;
 
   LivingdexWidget(
       @required this.livingdexId,
@@ -38,7 +36,8 @@ class LivingdexState extends State<LivingdexWidget> {
       return Text('Loading Pokemon');
     }
     else {
-      List<Pokemon> pokemons = livingdex.pokemons.where((pokemon) => pokemon.name.toLowerCase().contains(widget.searchCriteria)).toList();
+      List<Pokemon> pokemons = livingdex.pokemons.where((pokemon) =>
+          pokemon.name.toLowerCase().contains(widget.searchCriteria.toLowerCase())).toList();
       var myGrid = new GridView.builder(
         itemCount: pokemons.length,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
