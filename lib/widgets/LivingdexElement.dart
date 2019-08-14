@@ -17,7 +17,8 @@ class LivingdexElement extends StatefulWidget {
     @required this.livingdexId,
     @required this.initialCapturedState,
     @required this.onCaptureStatusChange,
-  });
+    @required Key key,
+  }) : super(key: key);
 
   @override
   _LivingdexElementState createState() => _LivingdexElementState();

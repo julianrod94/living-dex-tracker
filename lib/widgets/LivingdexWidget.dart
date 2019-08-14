@@ -43,12 +43,21 @@ class LivingdexState extends State<LivingdexWidget> {
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3),
         itemBuilder: (BuildContext context, int index) {
+          final itemPokemon = pokemons[index];
           return LivingdexElement(
-            pokemon: pokemons[index],
+            pokemon: itemPokemon,
             isShiny: livingdex.shiny,
             livingdexId: widget.livingdexId,
             initialCapturedState: pokemons[index].captured,
-            onCaptureStatusChange: (bool captured) => this.setState(() => livingdex.pokemons[index].captured = captured),
+            key: Key(itemPokemon.name),
+            onCaptureStatusChange: (bool captured) => this.setState(() =>
+                livingdex.pokemons = livingdex.pokemons.map((pokemon) {
+                  if(pokemon.id == itemPokemon.id) {
+                    pokemon.captured = captured;
+                  }
+                  return pokemon;
+                }).toList()
+            )
           );
         },
       );
