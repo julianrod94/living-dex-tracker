@@ -56,17 +56,29 @@ class _LivingdexElementState extends State<LivingdexElement> {
         child: Card(
           color: this.captured ? Colors.amber : Colors.white,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text('${pokemon.name}'),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text('${pokemon.name}'),
+                ),
+                flex: 1,
               ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Image.asset(widget.isShiny ? pokemon.shinySpriteUrl : pokemon.spriteUrl),
+              Expanded(
+                child: Image.asset(
+                    widget.isShiny ? pokemon.shinySpriteUrl : pokemon.spriteUrl,
+                    fit: BoxFit.fill,
+                    //scale: 0.5,
+                ),
+                flex: 3,
               ),
-              Text('# ${zeroConversions(pokemon.nationalNumber)}'),
+              Expanded(
+                  child: Text('# ${zeroConversions(pokemon.nationalNumber)}'),
+                  flex: 1,
+              ),
             ],
           ),
         ),
