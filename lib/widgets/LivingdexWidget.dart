@@ -36,8 +36,7 @@ class LivingdexState extends State<LivingdexWidget> {
       return Text('Loading Pokemon');
     }
     else {
-      List<Pokemon> pokemons = livingdex.pokemons.where((pokemon) =>
-          pokemon.name.toLowerCase().contains(widget.searchCriteria.toLowerCase())).toList();
+      List<Pokemon> pokemons = filterPokemons(livingdex.pokemons, widget.searchCriteria);
       var myGrid = new GridView.builder(
         itemCount: pokemons.length,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
@@ -63,5 +62,15 @@ class LivingdexState extends State<LivingdexWidget> {
       );
       return myGrid;
     }
+  }
+
+  // Filter pokemons by a search criteria. If it's a number it searches by pokemon national number.
+  // If it's not then it searches by pokemon name.
+  List<Pokemon> filterPokemons(List<Pokemon> pokemons, String filter) {
+    final numberSearched = int.tryParse(filter);
+    if(numberSearched != null) {
+      return pokemons.where((pokemon) => pokemon.nationalNumber == numberSearched).toList();
+    }
+    return pokemons.where((pokemon) => pokemon.name.toLowerCase().contains(widget.searchCriteria.toLowerCase())).toList();
   }
 }
