@@ -21,43 +21,68 @@ class LivingdexScreenState extends State<LivingdexScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.livingdexName),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () =>
-                  this.setState(() =>
-                  this.isSearchEnabled = !this.isSearchEnabled),
-            ),
-          ],
-        ),
+        appBar: !isSearchEnabled
+            ? AppBar(
+                title: Text(widget.livingdexName),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () => this.setState(
+                        () => this.isSearchEnabled = !this.isSearchEnabled),
+                  ),
+                ],
+              )
+            : AppBar(
+                automaticallyImplyLeading: false,
+                actions: <Widget>[
+                  ConstrainedBox(
+                    constraints: BoxConstraints.expand(
+                        width: MediaQuery.of(context).size.width),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () => this.setState(() {
+                              this.isSearchEnabled = !this.isSearchEnabled;
+                              this.searchCriteria = '';
+                            }),
+                          ),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: TextField(
+                              style: TextStyle(color: Colors.white),
+                              autofocus: true,
+                              decoration: InputDecoration(
+                                hintText: 'Enter a search term',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                this.setState(() => searchCriteria = value);
+                              },
+                            ),
+                          ),
+                          flex: 6,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: renderScreenElements(isSearchEnabled),
-        )
-    );
-  }
-
-
-  List<Widget> renderScreenElements(bool isSearchEnabled) {
-    var widgetList = List<Widget>();
-    final searchBar = Padding(
-        padding: EdgeInsets.all(5),
-        child: TextField(
-          autofocus: true,
-          decoration: InputDecoration(
-              hintText: 'Enter a search term'
-          ),
-          onChanged: (String value) {
-            this.setState(() => searchCriteria = value);
-          },
+          children: <Widget>[
+            Expanded(
+                child: LivingdexWidget(widget.livingDexId, searchCriteria)),
+          ],
         ));
-    final livingdex = Expanded(
-        child: LivingdexWidget(widget.livingDexId, searchCriteria));
-
-    if (isSearchEnabled) widgetList.add(searchBar);
-    widgetList.add(livingdex);
-    return widgetList;
   }
 }
